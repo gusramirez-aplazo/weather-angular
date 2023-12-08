@@ -1,27 +1,64 @@
-# WeatherReservamos
+# Weather app for Reservamos coding challenge by Gus Ramirez
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
+This is a simple weather app that uses the OpenWeatherMap API to get the weather for a given city.
+And it uses Reservamos's API to get geo location data for a given city.
 
-## Development server
+## Usage
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+> **Note:** This app requires Node.js v16 or v18 to run.
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Install dependencies
 
-## Build
+```shell
+    # Install commands
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+    # Npm
+    npm install
 
-## Running unit tests
+    # Or
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    # Yarn
+    yarn install
+```
 
-## Running end-to-end tests
+### Run in dev mode (local)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```shell
+    # Run commands
 
-## Further help
+    # Npm
+    npm run dev
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+    # Or
+
+    # Yarn
+    yarn dev
+```
+
+### Run containerized app (Docker)
+
+```shell
+    # build image
+    docker build -t reservamos .
+
+    # run image
+    docker run --name weather-reservamos --rm -p 5000:80 reservamos:latest
+
+    ##    Open browser and navigate to http://localhost:5000
+    ##    http://localhost:5000/
+
+    # to exit container
+    ##   press ctrl + c
+    ##   automatically container will be removed
+```
+
+## Stack
+
+- [Angular framework](https://angular.io/)
+- [Tailwindcss](https://tailwindcss.com/)
+
+## Contact info
+
+> Created by [Gus Ramírez](https://gusramirez.dev) ([**email**](mailto:g.ram.bt@hotmail.com)) - feel free to contact me!
