@@ -1,7 +1,7 @@
 import { Component, OnDestroy, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, shareReplay, switchMap, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { WeatherUI } from '../../core/domain/weather';
 import { WeatherService } from '../../core/services/weather.service';
 import { CityFormComponent } from '../city-form/city-form.component';
@@ -76,8 +76,7 @@ export class SearchComponent implements OnDestroy {
     takeUntil(this.#destroy$),
     switchMap(params =>
       this.#weatherService.getFiveDaysByCity(params.get('city') ?? '')
-    ),
-    shareReplay(1)
+    )
   );
   readonly #weather = toSignal(this.#weather$);
   readonly #dayFromIndex = signal(0);
@@ -85,18 +84,22 @@ export class SearchComponent implements OnDestroy {
   readonly selectedIndex = computed(() => this.#dayFromIndex());
 
   nextDays = computed(() =>
-    Object.values(this.#weather()?.dataByDay as Record<string, WeatherUI[]>)
-      .map(data => data.filter(item => item.time === this.#weather()?.minTime))
-      .flat()
+    this.#weather()
+      ? Object.values(this.#weather()?.dataByDay as Record<string, WeatherUI[]>)
+          .map(data =>
+            data.filter(item => item.time === this.#weather()?.minTime)
+          )
+          .flat()
+      : []
   );
-  currentItem = computed(() => this.nextDays()[this.#dayFromIndex()]);
-  currentDay = computed(() => this.currentItem().dayDate ?? '');
-  currentTemp = computed(() => this.currentItem().temperature ?? 0);
+  currentItem = computed(() => this.nextDays()[this.#dayFromIndex()] ?? null);
+  currentDay = computed(() => this.currentItem()?.dayDate ?? '');
+  currentTemp = computed(() => this.currentItem()?.temperature ?? 0);
   currentCity = computed(() => this.#weather()?.city ?? '');
-  currentDescription = computed(() => this.currentItem().description ?? '');
-  currentMaxTemp = computed(() => this.currentItem().temperatureMax ?? 0);
-  currentMinTemp = computed(() => this.currentItem().temperatureMin ?? 0);
-  currentIcon = computed(() => this.currentItem().iconGiantUrl ?? '');
+  currentDescription = computed(() => this.currentItem()?.description ?? '');
+  currentMaxTemp = computed(() => this.currentItem()?.temperatureMax ?? 0);
+  currentMinTemp = computed(() => this.currentItem()?.temperatureMin ?? 0);
+  currentIcon = computed(() => this.currentItem()?.iconGiantUrl ?? '');
 
   changeDay(index: number): void {
     this.#dayFromIndex.set(index);

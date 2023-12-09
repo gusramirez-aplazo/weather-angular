@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   OnDestroy,
@@ -75,7 +76,7 @@ import {
     </div>
   `,
 })
-export class CityFormComponent implements OnInit, OnDestroy {
+export class CityFormComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly #router = inject(Router);
   readonly #route = inject(ActivatedRoute);
   readonly #destroy$ = new Subject<void>();
@@ -93,10 +94,10 @@ export class CityFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cityControl.valueChanges
       .pipe(
-        startWith(this.cityControl.value),
-        takeUntil(this.#destroy$),
+        startWith(this.cityControl.value ?? ''),
         distinctUntilChanged(),
-        debounceTime(450)
+        debounceTime(450),
+        takeUntil(this.#destroy$)
       )
       .subscribe(value => {
         const extras: NavigationExtras = {
@@ -107,6 +108,12 @@ export class CityFormComponent implements OnInit, OnDestroy {
 
         this.#router.navigate(['.'], extras);
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.cityControl.setValue(
+      this.#route.snapshot.queryParamMap.get('city') ?? ''
+    );
   }
 
   ngOnDestroy(): void {
