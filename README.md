@@ -5,9 +5,14 @@ And it uses Reservamos's API to get geo location data for a given city.
 
 ## Usage
 
-> **Note:** This app requires Node.js v16 or v18 to run.
+The app is simple to use, just type the name of the city you want to get the weather for and after 450ms the app will make a request to the OpenWeatherMap API and display the weather for the given city.
+Is also possible to get the weather for a given city with partial name, for example: "New" will return the weather for "New York".
+The actual "locale" is set to 'es' (Spanish).
+At the bottom of the page there are mini cards with the weather for the next 5 days and is possible to navigate between days by clicking over the mini cards.
 
 ## Installation
+
+> **Note:** This app requires Node.js v16 or v18 to run.
 
 ### Install dependencies
 
